@@ -76,7 +76,7 @@ int main() {
 	videoSetModeSub(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	vramSetBankC(VRAM_C_SUB_BG);
-    consoleInit(&topScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, true, true);
+    	consoleInit(&topScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, true, true);
 	consoleInit(&bottomScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, false, true);
 	consoleSelect(&topScreen);
 	//give arm9 access to cart
@@ -89,9 +89,11 @@ int main() {
 	//set the state with key2
 	card.state(ncgc::NTRState::Key2);
 	if (!flashcart->initialize(&card)) {
-		iprintf("flashcart setup failed\npress <A> to shutdown")
+		iprintf("flashcart setup failed\npress <A> to shutdown");
 		WaitKey(KEY_A);
-		exit(0)
+		exit(0);
 	}
-	iprintf("flashcart setup success, now you'd proceed with the program here");
+	iprintf("flashcart setup success, now you'd proceed with the program here\npress <A> to exit");
+	WaitKey(KEY_A);
+	return 0;
 }
