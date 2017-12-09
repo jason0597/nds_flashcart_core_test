@@ -8,7 +8,7 @@ endif
 
 include $(DEVKITARM)/ds_rules
 
-LIBNCGC := $(CURDIR)/external/libncgc
+LIBNCGC := $(CURDIR)/libncgc
 
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
@@ -19,9 +19,9 @@ LIBNCGC := $(CURDIR)/external/libncgc
 #---------------------------------------------------------------------------------
 TARGET		:=	$(shell basename $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source external/flashcart_core external/flashcart_core/devices
+SOURCES		:=	source flashcart_core flashcart_core/devices
 DATA		:=	data
-INCLUDES	:=	include external/flashcart_core
+INCLUDES	:=	include flashcart_core
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -68,7 +68,7 @@ export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
 export NTRBOOT_FLASHER_NDS_VERSION := $(shell git describe --always --tags)
-export FLASHCART_CORE_VERSION := $(shell git -C external/flashcart_core describe --always --tags)
+export FLASHCART_CORE_VERSION := $(shell git -C flashcart_core describe --always --tags)
 
 CFILES		:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.c)))
 CPPFILES	:=	$(foreach dir,$(SOURCES),$(notdir $(wildcard $(dir)/*.cpp)))
@@ -115,7 +115,7 @@ $(BUILD): $(LIBNCGC)/lib/libncgc.a
 clean:
 	@echo clean ...
 	@$(MAKE) clean -C $(LIBNCGC)
-	@rm -fr $(BUILD) $(TARGET)*.elf $(TARGET)*.nds external/libncgc/lib
+	@rm -fr $(BUILD) $(TARGET)*.elf $(TARGET)*.nds libncgc/lib
 
 #---------------------------------------------------------------------------------
 else

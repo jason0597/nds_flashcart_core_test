@@ -5,6 +5,7 @@
 
 #include <nds.h>
 #include "device.h"
+#include "blowfish_keys.h"
 
 /*
 	enum log_priority {
@@ -17,6 +18,9 @@
 	};
 */
 int global_loglevel =  1;
+
+PrintConsole topScreen;
+PrintConsole bottomScreen;
 
 namespace flashcart_core {
 	namespace platform {
@@ -44,7 +48,7 @@ namespace flashcart_core {
 			sprintf(string_to_write, "[%s]: %s\n", priority_str, fmt);
 
 			consoleSelect(&bottomScreen);
-			int result = printf(string_to_write, args, "\n");
+			int result = iprintf(string_to_write, args, "\n");
 			consoleSelect(&topScreen);
 			va_end(args);
 
@@ -76,7 +80,7 @@ int main() {
 	videoSetModeSub(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
 	vramSetBankC(VRAM_C_SUB_BG);
-    	consoleInit(&topScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, true, true);
+    consoleInit(&topScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, true, true);
 	consoleInit(&bottomScreen, 3, BgType_Text4bpp, BgSize_T_256x256, 31, 0, false, true);
 	consoleSelect(&topScreen);
 	//give arm9 access to cart
@@ -88,12 +92,12 @@ int main() {
 	ncgc::NTRCard card(nullptr);
 	//set the state with key2
 	card.state(ncgc::NTRState::Key2);
-	if (!flashcart->initialize(&card)) {
+	if (!cart->initialize(&card)) {
 		iprintf("flashcart setup failed\npress <A> to shutdown");
 		WaitKey(KEY_A);
 		exit(0);
 	}
-	iprintf("flashcart setup success, now you'd proceed with the program here\npress <A> to exit");
+	iprintf("flashcart setup success, now you'd proceed with the program here");
 	WaitKey(KEY_A);
-	return 0;
+	exit(0);
 }
