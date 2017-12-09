@@ -48,7 +48,7 @@ namespace flashcart_core {
 			sprintf(string_to_write, "[%s]: %s\n", priority_str, fmt);
 
 			consoleSelect(&bottomScreen);
-			int result = iprintf(string_to_write, args, "\n");
+			int result = iprintf(string_to_write, args, "\n\n");
 			consoleSelect(&topScreen);
 			va_end(args);
 
@@ -86,10 +86,12 @@ int main() {
 	//give arm9 access to cart
 	sysSetBusOwners(true, true);
 	//setup the cart variable here, change the value in `at()` to select your flashcart (requires recompiling, i know)
-	//0: ak2i, 1: dstt, 2: r4 sdhc dual core, 3: r4isdhc, 4: r4igold
-	flashcart_core::Flashcart *cart = flashcart_core::flashcart_list->at(4); 
+	//0: ak2i, 1: dstt, 2: ace3ds, 3: r4 sdhc dual core, 4: r4isdhc, 5: r4igold
+	flashcart_core::Flashcart *cart = flashcart_core::flashcart_list->at(/*PUT A NUMBER HERE BETWEEN 0 AND 5*/); 
 	//set up ncgc's card object which holds the cart protocol
 	ncgc::NTRCard card(nullptr);
+	iprintf("press a to proceed\n");
+	WaitKey(KEY_A);
 	//set the state with key2
 	card.state(ncgc::NTRState::Key2);
 	if (!cart->initialize(&card)) {
